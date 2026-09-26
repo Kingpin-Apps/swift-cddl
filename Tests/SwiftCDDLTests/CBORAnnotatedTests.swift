@@ -176,6 +176,20 @@ import Testing
         #expect(seen.contains(.overlongHead) || seen.contains(.unsortedMapKeys))
     }
 
+    /// Every item is visited in the order written, with the path that leads
+    /// back to it.
+    @Test func walkVisitsEveryItemWithItsPath() throws {
+        // [1, [2, [3]], {4: 5}]
+        let bytes: [UInt8] = [0x83, 0x01, 0x82, 0x02, 0x81, 0x03, 0xA1, 0x04, 0x05]
+        let root = try #require(CBORNode.decodeAnnotated(bytes).root)
+        var paths: [[Int]] = []
+        root.walk { path, item in
+            paths.append(path)
+            #expect(root.item(at: path)?.span == item.span)
+        }
+        #expect(paths == [[], [0], [1], [1, 0], [1, 1], [1, 1, 0], [2], [2, 0], [2, 1]])
+    }
+
     // MARK: - Nesting
 
     /// How many levels `item` nests through first children, walked without

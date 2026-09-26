@@ -2,7 +2,7 @@ import Foundation
 import Testing
 
 import SwiftCDDL
-import SwiftCDDLCardano
+@testable import SwiftCDDLCardano
 
 /// The bundled era schemas, and transaction validation that tells the issues
 /// the ledger refuses from those it accepts.
@@ -55,6 +55,55 @@ import SwiftCDDLCardano
         let second = try await CardanoSchemas.validate(transaction: Data(rewritten), era: era)
         #expect(!second.isLedgerValid, "size change \(size)")
         #expect(second.issues.contains { $0.classification == .schema })
+    }
+
+    /// Data nested past the validation bound but within the decoding bound is
+    /// refused, then rewritten for the ledger's reading, on a task of Swift
+    /// concurrency, whose stack is small.
+    @Test func validatesDeeplyNestedDataOnATask() async throws {
+        let bytes = Data([UInt8](repeating: 0x81, count: 60_000) + [0x00])
+        let result = try await Task.detached {
+            try await CardanoSchemas.validate(transaction: bytes, era: .conway)
+        }.value
+        #expect(result.decoding.error == nil)
+        #expect(!result.matchesSchema)
+        #expect(!result.isLedgerValid)
+    }
+
+    /// A 65-byte string written in chunks of 64 and 1 bytes.
+    private static let chunked: [UInt8] = [0x5F, 0x58, 0x40] + [UInt8](repeating: 0xAB, count: 64) + [0x41, 0xCD, 0xFF]
+
+    /// `payload` embedded under tag 24, `levels` times over.
+    private static func embedded(_ payload: [UInt8], levels: Int) -> [UInt8] {
+        var bytes = payload
+        for _ in 0..<levels {
+            precondition(bytes.count <= 0xFFFF)
+            bytes = [0xD8, 0x18, 0x59, UInt8(bytes.count >> 8), UInt8(bytes.count & 0xFF)] + bytes
+        }
+        return bytes
+    }
+
+    /// A chunked string is cut for the ledger's reading inside CBOR embedded
+    /// under tag 24, as deep as validation reads embedded CBOR and no deeper.
+    @Test func cutsChunkedBytesInsideEmbeddedCBOR() throws {
+        let depth = ValidationLimits.defaultMaxEmbeddedDepth
+        let within = try #require(CBORNode.decodeAnnotated([0x81] + Self.embedded(Self.chunked, levels: depth)).root)
+        let view = CardanoSchemas.ledgerBoundedBytes(within)
+        #expect(view.changed)
+        var node = try #require(view.item.node)
+        node = try #require(node.arrayItems?.first)
+        for _ in 0..<depth {
+            guard case .tagged(let tagged) = node, tagged.tag == 24, case .byteString(let bytes, _) = tagged.content else {
+                Issue.record("not embedded CBOR: \(node)")
+                return
+            }
+            node = try CBORNode(decoding: bytes)
+        }
+        #expect(node == .byteString([UInt8](repeating: 0xAB, count: 64)))
+
+        let beyond = try #require(CBORNode.decodeAnnotated(Self.embedded(Self.chunked, levels: depth + 1)).root)
+        #expect(!CardanoSchemas.ledgerBoundedBytes(beyond).changed)
+        #expect(CardanoSchemas.ledgerBoundedBytes(beyond, maxEmbeddedDepth: depth + 1).changed)
     }
 
     @Test func resolvesIssuePathsThroughMapsAndTags() throws {

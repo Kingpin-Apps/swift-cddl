@@ -51,7 +51,7 @@ public enum CardanoSchemas {
 
         // Validate again as the ledger reads chunked byte strings: whatever
         // refusal goes away was down to them.
-        let ledgerView = ledgerBoundedBytes(root)
+        let ledgerView = ledgerBoundedBytes(root, maxEmbeddedDepth: options.limits.maxEmbeddedDepth)
         var remaining = Set<ValidationIssue>()
         if ledgerView.changed, let node = ledgerView.item.node {
             let second = await document.validate(cbor: node, rule: "transaction", options: options)
@@ -76,46 +76,112 @@ public enum CardanoSchemas {
     /// despite its length — longer than 64 bytes, written in chunks of at
     /// most 64 — cut to its first 64 bytes, so the schema's
     /// `bounded_bytes = bytes .size (0 .. 64)` reads it as the ledger does.
-    static func ledgerBoundedBytes(_ item: CBORAnnotatedItem) -> (item: CBORAnnotatedItem, changed: Bool) {
-        guard let node = item.node else { return (item, false) }
+    ///
+    /// CBOR embedded under tag 24 is read up to `maxEmbeddedDepth` levels
+    /// down, as deep as validation reads it. The tree is walked with its
+    /// pending work on the heap, so it may nest as deeply as decoding admits
+    /// on any stack.
+    static func ledgerBoundedBytes(
+        _ item: CBORAnnotatedItem,
+        maxEmbeddedDepth: Int = ValidationLimits.defaultMaxEmbeddedDepth
+    ) -> (item: CBORAnnotatedItem, changed: Bool) {
+        /// An item whose children are being rewritten. For CBOR embedded
+        /// under tag 24 the one child is the decoded payload.
+        struct Frame {
+            let item: CBORAnnotatedItem
+            let children: [CBORAnnotatedItem]
+            let embedded: Bool
+            let embeddedDepth: Int
+            var rewritten: [CBORAnnotatedItem] = []
+            var changed = false
+        }
+
         let limit = boundedBytesChunkLimit
-        switch node {
-        case .byteString(let bytes, indefinite: true)
-        where bytes.count > limit && item.children.allSatisfy({ $0.span.payload.count <= limit }):
-            let cut = CBORAnnotatedItem(
-                node: .byteString(Array(bytes.prefix(limit))), span: item.span, flags: item.flags, children: []
-            )
-            return (cut, true)
-        case .tagged(let tagged) where tagged.tag == 24:
-            // CBOR embedded in a byte string, as inline datums are.
-            guard case .byteString(let embedded, _) = tagged.content,
-                let inner = CBORNode.decodeAnnotated(embedded).root, inner.isComplete
-            else { return (item, false) }
-            let view = ledgerBoundedBytes(inner)
-            guard view.changed, let node = view.item.node else { return (item, false) }
-            let rewrapped = CBORNode.tagged(CBORTaggedItem(tag: 24, content: .byteString(node.encoded())))
-            return (CBORAnnotatedItem(node: rewrapped, span: item.span, flags: item.flags, children: item.children), true)
-        case .array, .map, .tagged:
-            let children = item.children.map(ledgerBoundedBytes)
-            guard children.contains(where: \.changed) else { return (item, false) }
-            let nodes = children.compactMap(\.item.node)
-            let rebuilt: CBORNode
-            switch node {
-            case .array(let array):
-                rebuilt = .array(CBORArray(nodes, indefinite: array.isIndefinite))
-            case .map(let map):
-                let entries = stride(from: 0, to: nodes.count - 1, by: 2).map { (key: nodes[$0], value: nodes[$0 + 1]) }
-                rebuilt = .map(CBORMap(entries, indefinite: map.isIndefinite))
-            case .tagged(let tagged):
-                rebuilt = .tagged(CBORTaggedItem(tag: tagged.tag, content: nodes[0]))
+        var frames: [Frame] = []
+        var next = item
+        var embeddedDepth = 0
+
+        while true {
+            // Rewrite `next` if it is a leaf, or open a frame for its children.
+            var done: (item: CBORAnnotatedItem, changed: Bool)
+            switch next.node {
+            case .byteString(let bytes, indefinite: true)?
+            where bytes.count > limit && next.children.allSatisfy({ $0.span.payload.count <= limit }):
+                let cut = CBORAnnotatedItem(
+                    node: .byteString(Array(bytes.prefix(limit))), span: next.span, flags: next.flags, children: []
+                )
+                done = (cut, true)
+            case .tagged(let tagged)? where tagged.tag == 24:
+                // CBOR embedded in a byte string, as inline datums are.
+                guard embeddedDepth < maxEmbeddedDepth, case .byteString(let embedded, _) = tagged.content,
+                    let inner = CBORNode.decodeAnnotated(embedded).root, inner.isComplete
+                else {
+                    done = (next, false)
+                    break
+                }
+                frames.append(Frame(item: next, children: [inner], embedded: true, embeddedDepth: embeddedDepth))
+                next = inner
+                embeddedDepth += 1
+                continue
+            case .array?, .map?, .tagged?:
+                guard let first = next.children.first else {
+                    done = (next, false)
+                    break
+                }
+                frames.append(Frame(item: next, children: next.children, embedded: false, embeddedDepth: embeddedDepth))
+                next = first
+                continue
             default:
-                return (item, false)
+                done = (next, false)
             }
-            let updated = CBORAnnotatedItem(node: rebuilt, span: item.span, flags: item.flags, children: children.map(\.item))
-            return (updated, true)
+
+            // Hand the rewritten item to its parent, closing every frame it
+            // completes, until one has a child left to rewrite.
+            while var frame = frames.popLast() {
+                frame.rewritten.append(done.item)
+                frame.changed = frame.changed || done.changed
+                if frame.rewritten.count < frame.children.count {
+                    next = frame.children[frame.rewritten.count]
+                    embeddedDepth = frame.embeddedDepth
+                    frames.append(frame)
+                    break
+                }
+                done = rebuilt(frame.item, children: frame.rewritten, changed: frame.changed, embedded: frame.embedded)
+            }
+            if frames.isEmpty {
+                return done
+            }
+        }
+    }
+
+    /// `item` with its children rewritten, or with its embedded CBOR
+    /// rewritten when `embedded` says the one child is that.
+    private static func rebuilt(
+        _ item: CBORAnnotatedItem,
+        children: [CBORAnnotatedItem],
+        changed: Bool,
+        embedded: Bool
+    ) -> (item: CBORAnnotatedItem, changed: Bool) {
+        guard changed, let node = item.node else { return (item, false) }
+        if embedded {
+            guard let inner = children[0].node else { return (item, false) }
+            let rewrapped = CBORNode.tagged(CBORTaggedItem(tag: 24, content: .byteString(inner.encoded())))
+            return (CBORAnnotatedItem(node: rewrapped, span: item.span, flags: item.flags, children: item.children), true)
+        }
+        let nodes = children.compactMap(\.node)
+        let rebuilt: CBORNode
+        switch node {
+        case .array(let array):
+            rebuilt = .array(CBORArray(nodes, indefinite: array.isIndefinite))
+        case .map(let map):
+            let entries = stride(from: 0, to: nodes.count - 1, by: 2).map { (key: nodes[$0], value: nodes[$0 + 1]) }
+            rebuilt = .map(CBORMap(entries, indefinite: map.isIndefinite))
+        case .tagged(let tagged):
+            rebuilt = .tagged(CBORTaggedItem(tag: tagged.tag, content: nodes[0]))
         default:
             return (item, false)
         }
+        return (CBORAnnotatedItem(node: rebuilt, span: item.span, flags: item.flags, children: children), true)
     }
 
     private static let cache = DocumentCache()

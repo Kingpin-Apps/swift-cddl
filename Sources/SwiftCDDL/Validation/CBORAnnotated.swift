@@ -167,11 +167,18 @@ public struct CBORAnnotatedItem: Sendable {
     /// Every item from this one down, in the order they were written, with
     /// the path to each.
     public func walk(_ visit: (_ path: [Int], _ item: CBORAnnotatedItem) -> Void) {
-        var pending: [([Int], CBORAnnotatedItem)] = [([], self)]
-        while let (path, item) = pending.popLast() {
+        // One path, cut back to each item's parent and extended by its index,
+        // rather than a copy of the path for every item.
+        var path: [Int] = []
+        var pending: [(depth: Int, index: Int, item: CBORAnnotatedItem)] = [(0, 0, self)]
+        while let (depth, index, item) = pending.popLast() {
+            if depth > 0 {
+                path.removeLast(path.count - (depth - 1))
+                path.append(index)
+            }
             visit(path, item)
             for index in item.children.indices.reversed() {
-                pending.append((path + [index], item.children[index]))
+                pending.append((depth + 1, index, item.children[index]))
             }
         }
     }
