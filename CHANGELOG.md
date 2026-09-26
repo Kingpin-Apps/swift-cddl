@@ -1,3 +1,9 @@
+## 0.2.2 (2026-09-26)
+
+### Fix
+
+- **cardano**: rewrite ledger bounded bytes without recursing
+
 ## 0.2.1 (2026-09-26)
 
 ### Fix
