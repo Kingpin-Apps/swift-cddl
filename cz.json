@@ -4,6 +4,7 @@
     "tag_format": "$version",
     "version_scheme": "semver",
     "version": "0.2.1",
-    "update_changelog_on_bump": true
+    "update_changelog_on_bump": true,
+    "annotated_tag": true
   }
 }
