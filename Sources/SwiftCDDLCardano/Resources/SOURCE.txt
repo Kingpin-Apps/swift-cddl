@@ -1,0 +1,6 @@
+The six era schemas in this directory are copied unchanged from
+cardano-ledger @ dae069780697449fbd9cda47f03fb72745b0b8c0
+(eras/<era>/impl/cddl/data/<era>.cddl), https://github.com/IntersectMBO/cardano-ledger
+
+Copyright the cardano-ledger contributors, published by IntersectMBO.
+Licensed under the Apache License, Version 2.0; see LICENSE-cardano-ledger.txt.

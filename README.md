@@ -33,7 +33,7 @@ Add to your `Package.swift`:
 ```swift
 dependencies: [
     .package(url: "https://github.com/Kingpin-Apps/swift-cddl.git",
-             .upToNextMinor(from: "0.1.0")),
+             .upToNextMinor(from: "0.2.0")),
 ]
 ```
 
@@ -122,18 +122,39 @@ readings = [ * reading ]
 
 ## Cardano transactions
 
-Use the ledger schema of the transaction's era and name the `transaction`
-rule, since the first rule of the ledger schemas is `block`:
+The `SwiftCDDLCardano` product bundles the ledger schemas of every era from
+Shelley to Conway and validates whole transactions against them:
 
 ```swift
-let conway = try CDDLDocument(data: Data(contentsOf: conwaySchemaURL))
-let result = await conway.validate(cbor: transactionBytes, rule: "transaction")
+import SwiftCDDLCardano
+
+let result = try await CardanoSchemas.validate(transaction: bytes, era: .conway)
+result.matchesSchema   // the schema's own verdict
+result.isLedgerValid   // true when every issue is one the ledger accepts
 ```
 
 The ledger schemas limit `bounded_bytes` to 64 bytes with `.size (0..64)`,
 while the ledger itself also accepts longer byte strings encoded in chunks of
-at most 64 bytes. CDDL cannot say that, so such byte strings are reported.
-The documentation covers this and other details.
+at most 64 bytes. CDDL cannot say that, so the schema refuses them. Each issue
+comes with a classification, and those caused only by such byte strings are
+marked `.ledgerChunkedBytes`.
+
+To use a schema directly, name the `transaction` rule, since the first rule of
+the ledger schemas is `block`:
+
+```swift
+let conway = try CardanoSchemas.document(for: .conway)
+let result = await conway.validate(cbor: transactionBytes, rule: "transaction")
+```
+
+## Byte offsets
+
+`CBORNode.decodeAnnotated(_:)` decodes with the byte span of every item's head
+and payload, flags encodings that depart from the preferred serialization
+(overlong heads, indefinite lengths, wide floats, unsorted or repeated map
+keys), and keeps the items read before malformed or truncated input broke off.
+`path(toByte:)` and `path(forIssuePath:)` link bytes and validation issues to
+items.
 
 ## Options and limits
 
@@ -177,4 +198,5 @@ the control operators, and limits and concurrency.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). The ledger schemas bundled in `SwiftCDDLCardano`
+are Apache-2.0; see `Sources/SwiftCDDLCardano/Resources/SOURCE.txt`.

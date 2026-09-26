@@ -17,6 +17,10 @@ let package = Package(
             name: "SwiftCDDL",
             targets: ["SwiftCDDL"]
         ),
+        .library(
+            name: "SwiftCDDLCardano",
+            targets: ["SwiftCDDLCardano"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/Kingpin-Apps/swift-cbor-codable.git", from: "0.3.4"),
@@ -30,10 +34,18 @@ let package = Package(
                 .product(name: "BigInt", package: "BigInt"),
             ]
         ),
+        .target(
+            name: "SwiftCDDLCardano",
+            dependencies: ["SwiftCDDL"],
+            resources: [
+                .process("Resources"),
+            ]
+        ),
         .testTarget(
             name: "SwiftCDDLTests",
             dependencies: [
                 "SwiftCDDL",
+                "SwiftCDDLCardano",
                 .product(name: "CBORCodable", package: "swift-cbor-codable"),
                 .product(name: "BigInt", package: "BigInt"),
             ],

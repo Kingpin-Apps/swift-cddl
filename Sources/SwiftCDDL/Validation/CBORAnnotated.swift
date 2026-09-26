@@ -112,6 +112,53 @@ public struct CBORAnnotatedItem: Sendable {
         return item
     }
 
+    /// The child indexes leading to the item a validation issue is about,
+    /// given the issue's ``ValidationIssue/path``, or `nil` when no item of
+    /// this tree has that location.
+    ///
+    /// A path names array items by index and map entries by key, and passes
+    /// through tags without a segment. A map entry's segment leads to its
+    /// value. A path that goes on into CBOR embedded in a byte string (the
+    /// `.cbor` control) leads to that byte string.
+    public func path(forIssuePath issuePath: String) -> [Int]? {
+        var path: [Int] = []
+        var item = self
+        var rest = Substring(issuePath)
+        while true {
+            while case .tagged? = item.node, item.children.count == 1 {
+                path.append(0)
+                item = item.children[0]
+            }
+            if rest.isEmpty { return path }
+            guard rest.first == "/" else { return nil }
+            rest = rest.dropFirst()
+            switch item.node {
+            case .byteString?:
+                return path
+            case .array?:
+                let segment = rest.prefix { $0 != "/" }
+                guard let index = Int(segment), item.children.indices.contains(index) else { return nil }
+                rest = rest.dropFirst(segment.count)
+                path.append(index)
+                item = item.children[index]
+            case .map?:
+                let match = stride(from: 0, to: item.children.count - 1, by: 2).lazy.compactMap { index -> (Int, Int)? in
+                    guard let key = item.children[index].node else { return nil }
+                    let segment = formatPathKey(key)
+                    guard rest.hasPrefix(segment) else { return nil }
+                    let after = rest.dropFirst(segment.count)
+                    return after.isEmpty || after.first == "/" ? (index + 1, segment.count) : nil
+                }.first
+                guard let (index, length) = match else { return nil }
+                rest = rest.dropFirst(length)
+                path.append(index)
+                item = item.children[index]
+            default:
+                return nil
+            }
+        }
+    }
+
     /// Every item from this one down, in the order they were written, with
     /// the path to each.
     public func walk(_ visit: (_ path: [Int], _ item: CBORAnnotatedItem) -> Void) {
