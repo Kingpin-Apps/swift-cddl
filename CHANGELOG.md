@@ -1,3 +1,9 @@
+## 0.2.1 (2026-09-26)
+
+### Fix
+
+- **cbor**: free deeply nested annotated trees without recursing
+
 ## 0.2.0 (2026-09-26)
 
 ### Feat
