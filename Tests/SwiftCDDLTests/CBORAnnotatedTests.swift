@@ -175,4 +175,54 @@ import Testing
         #expect(seen.contains(.indefiniteLength))
         #expect(seen.contains(.overlongHead) || seen.contains(.unsortedMapKeys))
     }
+
+    // MARK: - Nesting
+
+    /// How many levels `item` nests through first children, walked without
+    /// recursing.
+    private static func depth(of item: CBORAnnotatedItem) -> Int {
+        var depth = 1
+        var item = item
+        while let child = item.children.first {
+            depth += 1
+            item = child
+        }
+        return depth
+    }
+
+    /// Decoding, copying and freeing an annotated tree keep their pending work
+    /// on the heap, so a tree nested far past what a small stack holds is
+    /// handled on a task of Swift concurrency.
+    @Test func aDeeplyNestedTreeIsDecodedCopiedAndFreedOnATask() async {
+        let levels = 100_000
+        await Task.detached {
+            // Past the decoding bound: the levels read are kept, incomplete.
+            var decoding: CBORAnnotatedDecoding? = CBORNode.decodeAnnotated(
+                [UInt8](repeating: 0x81, count: levels) + [0x00]
+            )
+            #expect(decoding?.error == .nestedTooDeeply)
+            #expect(decoding?.root.map(Self.depth) == maxDecodeNestingDepth + 1)
+
+            // At the bound: the whole tree decodes.
+            var complete: CBORAnnotatedItem? = CBORNode.decodeAnnotated(
+                [UInt8](repeating: 0x81, count: maxDecodeNestingDepth) + [0x00]
+            ).root
+            #expect(complete?.isComplete == true)
+            #expect(complete.map(Self.depth) == maxDecodeNestingDepth + 1)
+
+            // Built by hand, past the bound.
+            var built = CBORAnnotatedItem(node: .unsigned(0), span: CBORByteSpan(start: 0, headerEnd: 1, end: 1), flags: [], children: [])
+            for _ in 0..<levels {
+                built = CBORAnnotatedItem(node: nil, span: built.span, flags: [], children: [built])
+            }
+            var copy: CBORAnnotatedItem? = built
+            #expect(copy.map(Self.depth) == levels + 1)
+
+            built = CBORAnnotatedItem(node: nil, span: built.span, flags: [], children: [])
+            decoding = nil
+            complete = nil
+            copy = nil
+            #expect(decoding == nil && complete == nil && copy == nil)
+        }.value
+    }
 }

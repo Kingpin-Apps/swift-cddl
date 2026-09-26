@@ -68,6 +68,9 @@ public struct CBORNonCanonicalFlags: OptionSet, Sendable, Hashable {
 /// The children follow the encoding: an array's items; a map's keys and values
 /// alternating, key first; a tag's content; and the chunks of a string of
 /// indefinite length.
+///
+/// Copying an item and freeing it walk it without recursing, so a tree nested
+/// however deeply is freed on whatever stack drops it.
 public struct CBORAnnotatedItem: Sendable {
     /// The item, or `nil` when the input ended or broke off before it was
     /// complete.
@@ -77,13 +80,15 @@ public struct CBORAnnotatedItem: Sendable {
     public let span: CBORByteSpan
     /// How the item's own encoding departs from the preferred serialization.
     public let flags: CBORNonCanonicalFlags
-    public let children: [CBORAnnotatedItem]
+    fileprivate let storage: CBORAnnotatedChildren
+
+    public var children: [CBORAnnotatedItem] { storage.items }
 
     public init(node: CBORNode?, span: CBORByteSpan, flags: CBORNonCanonicalFlags, children: [CBORAnnotatedItem]) {
         self.node = node
         self.span = span
         self.flags = flags
-        self.children = children
+        self.storage = children.isEmpty ? .empty : CBORAnnotatedChildren(children)
     }
 
     /// Whether the item and everything in it decoded.
@@ -167,6 +172,42 @@ public struct CBORAnnotatedItem: Sendable {
             visit(path, item)
             for index in item.children.indices.reversed() {
                 pending.append((path + [index], item.children[index]))
+            }
+        }
+    }
+}
+
+/// The children of an annotated item. Freeing one frees what it holds one
+/// level at a time, so a tree nested however deeply is freed on whatever stack
+/// drops it.
+private final class CBORAnnotatedChildren: @unchecked Sendable {
+    /// Shared by every item without children. Items are only taken out of a
+    /// holder as it is freed, which this one never is.
+    static let empty = CBORAnnotatedChildren([])
+
+    private(set) var items: [CBORAnnotatedItem]
+
+    init(_ items: [CBORAnnotatedItem]) {
+        self.items = items
+    }
+
+    /// Moves the children of every item this one holds into `pending`,
+    /// leaving it holding none.
+    func takeGrandchildren(into pending: inout [CBORAnnotatedChildren]) {
+        for item in items where !item.storage.items.isEmpty {
+            pending.append(item.storage)
+        }
+        items = []
+    }
+
+    deinit {
+        guard !items.isEmpty else { return }
+        var pending: [CBORAnnotatedChildren] = []
+        takeGrandchildren(into: &pending)
+        while var children = pending.popLast() {
+            // One still referenced from elsewhere is left to its other holders.
+            if isKnownUniquelyReferenced(&children) {
+                children.takeGrandchildren(into: &pending)
             }
         }
     }
