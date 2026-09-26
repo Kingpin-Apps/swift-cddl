@@ -1,0 +1,12 @@
+hash	network	epoch	expect	features
+0f341a981cc3f5d4b38acb9c82e114f2909825b10e550e35d9b40cc0d1dec6a2	mainnet	366	valid	metadata,mint,multi-asset,native-script
+e8df5d5d7cf33d783a7e9954773b406399323ab4d43c664cf709813456c7ed1c	mainnet	366	valid	payment
+a83f479c5635e1e563a19f6e72a1be59fb082bbf31de90cc176850ee799b08ac	mainnet	392	valid	map-output,update
+73ca97f07a2b21ee99fb8d3918de13178d7a83205e112be6d4f87ceae465a3f3	mainnet	460	valid	collateral,collateral-return,datum-hash,datums,large,metadata,mint,multi-asset,plutus-v1,redeemers,required-signers,validity-start
+5b0cece27fcd266abd44b5beb2a407f43735ed53af00596208818e350d7fef7c	mainnet	499	valid	map-output,pool-retire
+7db682318826a957389c3401dba9207355e64639e353e6d8150cde86c564c6b9	mainnet	505	invalid	chunked-bounded-bytes,collateral,inline-datum,map-output,mint,multi-asset,plutus-v1,redeemers,reference-inputs,required-signers,validity-start
+942ad235df25a34657d15f4e3dce346f417a6c4dd5611c00c3d632af499f9ed5	mainnet	505	valid	payment,bootstrap-witness,byron-output
+a27c1ca98ff2b73767c22b00b5abe16df5419bd280654565391ac2bd059cd7b1	mainnet	505	valid	map-output,stake-dereg
+b5c75ca29645e15a5197fd2da4e37028016acd7bb473cc7dd084b6df553f7971	mainnet	505	valid	collateral,collateral-return,inline-datum,map-output,multi-asset,plutus-v2,redeemers,reference-inputs,required-signers,validity-start,withdrawal
+b6faa4c67777eb79dfd4a1b506b62516b2db18d51a4159ae2650bf00801f80a0	mainnet	505	valid	pool-reg,stake-deleg
+d4eef61a266f98d65ef365b5be8eca95a3a5661a45ad1bcc20b9350a8e8d25bd	mainnet	505	valid	stake-deleg,stake-reg

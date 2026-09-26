@@ -1,0 +1,2414 @@
+[
+ {
+  "document": "0",
+  "read": "OK u0"
+ },
+ {
+  "document": "-0",
+  "read": "OK f-0e0|-0.0"
+ },
+ {
+  "document": "1",
+  "read": "OK u1"
+ },
+ {
+  "document": "-1",
+  "read": "OK i-1"
+ },
+ {
+  "document": "10",
+  "read": "OK u10"
+ },
+ {
+  "document": "01",
+  "read": "ERR invalid number at line 1 column 2"
+ },
+ {
+  "document": "1.5",
+  "read": "OK f1.5e0|1.5"
+ },
+ {
+  "document": "-1.5",
+  "read": "OK f-1.5e0|-1.5"
+ },
+ {
+  "document": "1e5",
+  "read": "OK f1e5|100000.0"
+ },
+ {
+  "document": "1E-5",
+  "read": "OK f1e-5|0.00001"
+ },
+ {
+  "document": "1.5e+3",
+  "read": "OK f1.5e3|1500.0"
+ },
+ {
+  "document": "1.",
+  "read": "ERR EOF while parsing a value at line 1 column 2"
+ },
+ {
+  "document": ".5",
+  "read": "ERR expected value at line 1 column 1"
+ },
+ {
+  "document": "+1",
+  "read": "ERR expected value at line 1 column 1"
+ },
+ {
+  "document": "-",
+  "read": "ERR EOF while parsing a value at line 1 column 1"
+ },
+ {
+  "document": "1e",
+  "read": "ERR EOF while parsing a value at line 1 column 2"
+ },
+ {
+  "document": "18446744073709551615",
+  "read": "OK u18446744073709551615"
+ },
+ {
+  "document": "18446744073709551616",
+  "read": "OK f1.8446744073709552e19|1.8446744073709552e+19"
+ },
+ {
+  "document": "-9223372036854775808",
+  "read": "OK i-9223372036854775808"
+ },
+ {
+  "document": "-9223372036854775809",
+  "read": "OK f-9.223372036854776e18|-9.223372036854776e+18"
+ },
+ {
+  "document": "1.7976931348623157e308",
+  "read": "OK f1.7976931348623157e308|1.7976931348623157e+308"
+ },
+ {
+  "document": "1e400",
+  "read": "ERR number out of range at line 1 column 5"
+ },
+ {
+  "document": "true",
+  "read": "OK true"
+ },
+ {
+  "document": "false",
+  "read": "OK false"
+ },
+ {
+  "document": "null",
+  "read": "OK null"
+ },
+ {
+  "document": "tru",
+  "read": "ERR EOF while parsing a value at line 1 column 3"
+ },
+ {
+  "document": "nul",
+  "read": "ERR EOF while parsing a value at line 1 column 3"
+ },
+ {
+  "document": "truex",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "\"\"",
+  "read": "OK \"\""
+ },
+ {
+  "document": "\"a\"",
+  "read": "OK \"a\""
+ },
+ {
+  "document": "\"a\\\"b\"",
+  "read": "OK \"a\\\"b\""
+ },
+ {
+  "document": "\"\\\\\"",
+  "read": "OK \"\\\\\""
+ },
+ {
+  "document": "\"\\u0041\"",
+  "read": "OK \"A\""
+ },
+ {
+  "document": "\"\\ud83d\\ude00\"",
+  "read": "OK \"😀\""
+ },
+ {
+  "document": "\"\\ud83d\"",
+  "read": "ERR unexpected end of hex escape at line 1 column 8"
+ },
+ {
+  "document": "\"\\n\\t\\r\\b\\f\\/\"",
+  "read": "OK \"\\n\\t\\r\\b\\f/\""
+ },
+ {
+  "document": "\"\\x\"",
+  "read": "ERR invalid escape at line 1 column 3"
+ },
+ {
+  "document": "\"\u0001\"",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 2"
+ },
+ {
+  "document": "\"\t\"",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 2"
+ },
+ {
+  "document": "\"unterminated",
+  "read": "ERR EOF while parsing a string at line 1 column 13"
+ },
+ {
+  "document": "\"é\"",
+  "read": "OK \"é\""
+ },
+ {
+  "document": "\"日本\"",
+  "read": "OK \"日本\""
+ },
+ {
+  "document": "[0]",
+  "read": "OK [u0]"
+ },
+ {
+  "document": "[0, 0]",
+  "read": "OK [u0,u0]"
+ },
+ {
+  "document": "{\"k\": 0}",
+  "read": "OK {\"k\":0}"
+ },
+ {
+  "document": "{0: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 0 ] ",
+  "read": "OK [u0]"
+ },
+ {
+  "document": "[0]x",
+  "read": "ERR trailing characters at line 1 column 4"
+ },
+ {
+  "document": "[0,]",
+  "read": "ERR trailing comma at line 1 column 4"
+ },
+ {
+  "document": "[0 0]",
+  "read": "ERR expected `,` or `]` at line 1 column 4"
+ },
+ {
+  "document": "{\"k\" 0}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 0,}",
+  "read": "ERR trailing comma at line 1 column 9"
+ },
+ {
+  "document": "{\"k\": 0 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 9"
+ },
+ {
+  "document": "[-0]",
+  "read": "OK [f-0e0|-0.0]"
+ },
+ {
+  "document": "[-0, -0]",
+  "read": "OK [f-0e0|-0.0,f-0e0|-0.0]"
+ },
+ {
+  "document": "{\"k\": -0}",
+  "read": "OK {\"k\":-0.0}"
+ },
+ {
+  "document": "{-0: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ -0 ] ",
+  "read": "OK [f-0e0|-0.0]"
+ },
+ {
+  "document": "[-0]x",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "[-0,]",
+  "read": "ERR trailing comma at line 1 column 5"
+ },
+ {
+  "document": "[-0 -0]",
+  "read": "ERR expected `,` or `]` at line 1 column 5"
+ },
+ {
+  "document": "{\"k\" -0}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": -0,}",
+  "read": "ERR trailing comma at line 1 column 10"
+ },
+ {
+  "document": "{\"k\": -0 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 10"
+ },
+ {
+  "document": "[1]",
+  "read": "OK [u1]"
+ },
+ {
+  "document": "[1, 1]",
+  "read": "OK [u1,u1]"
+ },
+ {
+  "document": "{\"k\": 1}",
+  "read": "OK {\"k\":1}"
+ },
+ {
+  "document": "{1: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1 ] ",
+  "read": "OK [u1]"
+ },
+ {
+  "document": "[1]x",
+  "read": "ERR trailing characters at line 1 column 4"
+ },
+ {
+  "document": "[1,]",
+  "read": "ERR trailing comma at line 1 column 4"
+ },
+ {
+  "document": "[1 1]",
+  "read": "ERR expected `,` or `]` at line 1 column 4"
+ },
+ {
+  "document": "{\"k\" 1}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1,}",
+  "read": "ERR trailing comma at line 1 column 9"
+ },
+ {
+  "document": "{\"k\": 1 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 9"
+ },
+ {
+  "document": "[-1]",
+  "read": "OK [i-1]"
+ },
+ {
+  "document": "[-1, -1]",
+  "read": "OK [i-1,i-1]"
+ },
+ {
+  "document": "{\"k\": -1}",
+  "read": "OK {\"k\":-1}"
+ },
+ {
+  "document": "{-1: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ -1 ] ",
+  "read": "OK [i-1]"
+ },
+ {
+  "document": "[-1]x",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "[-1,]",
+  "read": "ERR trailing comma at line 1 column 5"
+ },
+ {
+  "document": "[-1 -1]",
+  "read": "ERR expected `,` or `]` at line 1 column 5"
+ },
+ {
+  "document": "{\"k\" -1}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": -1,}",
+  "read": "ERR trailing comma at line 1 column 10"
+ },
+ {
+  "document": "{\"k\": -1 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 10"
+ },
+ {
+  "document": "[10]",
+  "read": "OK [u10]"
+ },
+ {
+  "document": "[10, 10]",
+  "read": "OK [u10,u10]"
+ },
+ {
+  "document": "{\"k\": 10}",
+  "read": "OK {\"k\":10}"
+ },
+ {
+  "document": "{10: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 10 ] ",
+  "read": "OK [u10]"
+ },
+ {
+  "document": "[10]x",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "[10,]",
+  "read": "ERR trailing comma at line 1 column 5"
+ },
+ {
+  "document": "[10 10]",
+  "read": "ERR expected `,` or `]` at line 1 column 5"
+ },
+ {
+  "document": "{\"k\" 10}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 10,}",
+  "read": "ERR trailing comma at line 1 column 10"
+ },
+ {
+  "document": "{\"k\": 10 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 10"
+ },
+ {
+  "document": "[01]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[01, 01]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "{\"k\": 01}",
+  "read": "ERR invalid number at line 1 column 8"
+ },
+ {
+  "document": "{01: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 01 ] ",
+  "read": "ERR invalid number at line 1 column 5"
+ },
+ {
+  "document": "[01]x",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[01,]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[01 01]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "{\"k\" 01}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 01,}",
+  "read": "ERR invalid number at line 1 column 8"
+ },
+ {
+  "document": "{\"k\": 01 \"j\": 1}",
+  "read": "ERR invalid number at line 1 column 8"
+ },
+ {
+  "document": "[1.5]",
+  "read": "OK [f1.5e0|1.5]"
+ },
+ {
+  "document": "[1.5, 1.5]",
+  "read": "OK [f1.5e0|1.5,f1.5e0|1.5]"
+ },
+ {
+  "document": "{\"k\": 1.5}",
+  "read": "OK {\"k\":1.5}"
+ },
+ {
+  "document": "{1.5: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1.5 ] ",
+  "read": "OK [f1.5e0|1.5]"
+ },
+ {
+  "document": "[1.5]x",
+  "read": "ERR trailing characters at line 1 column 6"
+ },
+ {
+  "document": "[1.5,]",
+  "read": "ERR trailing comma at line 1 column 6"
+ },
+ {
+  "document": "[1.5 1.5]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\" 1.5}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1.5,}",
+  "read": "ERR trailing comma at line 1 column 11"
+ },
+ {
+  "document": "{\"k\": 1.5 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 11"
+ },
+ {
+  "document": "[-1.5]",
+  "read": "OK [f-1.5e0|-1.5]"
+ },
+ {
+  "document": "[-1.5, -1.5]",
+  "read": "OK [f-1.5e0|-1.5,f-1.5e0|-1.5]"
+ },
+ {
+  "document": "{\"k\": -1.5}",
+  "read": "OK {\"k\":-1.5}"
+ },
+ {
+  "document": "{-1.5: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ -1.5 ] ",
+  "read": "OK [f-1.5e0|-1.5]"
+ },
+ {
+  "document": "[-1.5]x",
+  "read": "ERR trailing characters at line 1 column 7"
+ },
+ {
+  "document": "[-1.5,]",
+  "read": "ERR trailing comma at line 1 column 7"
+ },
+ {
+  "document": "[-1.5 -1.5]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"k\" -1.5}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": -1.5,}",
+  "read": "ERR trailing comma at line 1 column 12"
+ },
+ {
+  "document": "{\"k\": -1.5 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 12"
+ },
+ {
+  "document": "[1e5]",
+  "read": "OK [f1e5|100000.0]"
+ },
+ {
+  "document": "[1e5, 1e5]",
+  "read": "OK [f1e5|100000.0,f1e5|100000.0]"
+ },
+ {
+  "document": "{\"k\": 1e5}",
+  "read": "OK {\"k\":100000.0}"
+ },
+ {
+  "document": "{1e5: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1e5 ] ",
+  "read": "OK [f1e5|100000.0]"
+ },
+ {
+  "document": "[1e5]x",
+  "read": "ERR trailing characters at line 1 column 6"
+ },
+ {
+  "document": "[1e5,]",
+  "read": "ERR trailing comma at line 1 column 6"
+ },
+ {
+  "document": "[1e5 1e5]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\" 1e5}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1e5,}",
+  "read": "ERR trailing comma at line 1 column 11"
+ },
+ {
+  "document": "{\"k\": 1e5 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 11"
+ },
+ {
+  "document": "[1E-5]",
+  "read": "OK [f1e-5|0.00001]"
+ },
+ {
+  "document": "[1E-5, 1E-5]",
+  "read": "OK [f1e-5|0.00001,f1e-5|0.00001]"
+ },
+ {
+  "document": "{\"k\": 1E-5}",
+  "read": "OK {\"k\":0.00001}"
+ },
+ {
+  "document": "{1E-5: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1E-5 ] ",
+  "read": "OK [f1e-5|0.00001]"
+ },
+ {
+  "document": "[1E-5]x",
+  "read": "ERR trailing characters at line 1 column 7"
+ },
+ {
+  "document": "[1E-5,]",
+  "read": "ERR trailing comma at line 1 column 7"
+ },
+ {
+  "document": "[1E-5 1E-5]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"k\" 1E-5}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1E-5,}",
+  "read": "ERR trailing comma at line 1 column 12"
+ },
+ {
+  "document": "{\"k\": 1E-5 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 12"
+ },
+ {
+  "document": "[1.5e+3]",
+  "read": "OK [f1.5e3|1500.0]"
+ },
+ {
+  "document": "[1.5e+3, 1.5e+3]",
+  "read": "OK [f1.5e3|1500.0,f1.5e3|1500.0]"
+ },
+ {
+  "document": "{\"k\": 1.5e+3}",
+  "read": "OK {\"k\":1500.0}"
+ },
+ {
+  "document": "{1.5e+3: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1.5e+3 ] ",
+  "read": "OK [f1.5e3|1500.0]"
+ },
+ {
+  "document": "[1.5e+3]x",
+  "read": "ERR trailing characters at line 1 column 9"
+ },
+ {
+  "document": "[1.5e+3,]",
+  "read": "ERR trailing comma at line 1 column 9"
+ },
+ {
+  "document": "[1.5e+3 1.5e+3]",
+  "read": "ERR expected `,` or `]` at line 1 column 9"
+ },
+ {
+  "document": "{\"k\" 1.5e+3}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1.5e+3,}",
+  "read": "ERR trailing comma at line 1 column 14"
+ },
+ {
+  "document": "{\"k\": 1.5e+3 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 14"
+ },
+ {
+  "document": "[1.]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[1., 1.]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "{\"k\": 1.}",
+  "read": "ERR invalid number at line 1 column 9"
+ },
+ {
+  "document": "{1.: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1. ] ",
+  "read": "ERR invalid number at line 1 column 6"
+ },
+ {
+  "document": "[1.]x",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[1.,]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[1. 1.]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "{\"k\" 1.}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1.,}",
+  "read": "ERR invalid number at line 1 column 9"
+ },
+ {
+  "document": "{\"k\": 1. \"j\": 1}",
+  "read": "ERR invalid number at line 1 column 9"
+ },
+ {
+  "document": "[.5]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[.5, .5]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "{\"k\": .5}",
+  "read": "ERR expected value at line 1 column 7"
+ },
+ {
+  "document": "{.5: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ .5 ] ",
+  "read": "ERR expected value at line 1 column 4"
+ },
+ {
+  "document": "[.5]x",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[.5,]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[.5 .5]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "{\"k\" .5}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": .5,}",
+  "read": "ERR expected value at line 1 column 7"
+ },
+ {
+  "document": "{\"k\": .5 \"j\": 1}",
+  "read": "ERR expected value at line 1 column 7"
+ },
+ {
+  "document": "[+1]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[+1, +1]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "{\"k\": +1}",
+  "read": "ERR expected value at line 1 column 7"
+ },
+ {
+  "document": "{+1: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ +1 ] ",
+  "read": "ERR expected value at line 1 column 4"
+ },
+ {
+  "document": "[+1]x",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[+1,]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[+1 +1]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "{\"k\" +1}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": +1,}",
+  "read": "ERR expected value at line 1 column 7"
+ },
+ {
+  "document": "{\"k\": +1 \"j\": 1}",
+  "read": "ERR expected value at line 1 column 7"
+ },
+ {
+  "document": "[-]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[-, -]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "{\"k\": -}",
+  "read": "ERR invalid number at line 1 column 8"
+ },
+ {
+  "document": "{-: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ - ] ",
+  "read": "ERR invalid number at line 1 column 5"
+ },
+ {
+  "document": "[-]x",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[-,]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[- -]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "{\"k\" -}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": -,}",
+  "read": "ERR invalid number at line 1 column 8"
+ },
+ {
+  "document": "{\"k\": - \"j\": 1}",
+  "read": "ERR invalid number at line 1 column 8"
+ },
+ {
+  "document": "[1e]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[1e, 1e]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "{\"k\": 1e}",
+  "read": "ERR invalid number at line 1 column 9"
+ },
+ {
+  "document": "{1e: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1e ] ",
+  "read": "ERR invalid number at line 1 column 6"
+ },
+ {
+  "document": "[1e]x",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[1e,]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[1e 1e]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "{\"k\" 1e}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1e,}",
+  "read": "ERR invalid number at line 1 column 9"
+ },
+ {
+  "document": "{\"k\": 1e \"j\": 1}",
+  "read": "ERR invalid number at line 1 column 9"
+ },
+ {
+  "document": "[18446744073709551615]",
+  "read": "OK [u18446744073709551615]"
+ },
+ {
+  "document": "[18446744073709551615, 18446744073709551615]",
+  "read": "OK [u18446744073709551615,u18446744073709551615]"
+ },
+ {
+  "document": "{\"k\": 18446744073709551615}",
+  "read": "OK {\"k\":18446744073709551615}"
+ },
+ {
+  "document": "{18446744073709551615: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 18446744073709551615 ] ",
+  "read": "OK [u18446744073709551615]"
+ },
+ {
+  "document": "[18446744073709551615]x",
+  "read": "ERR trailing characters at line 1 column 23"
+ },
+ {
+  "document": "[18446744073709551615,]",
+  "read": "ERR trailing comma at line 1 column 23"
+ },
+ {
+  "document": "[18446744073709551615 18446744073709551615]",
+  "read": "ERR expected `,` or `]` at line 1 column 23"
+ },
+ {
+  "document": "{\"k\" 18446744073709551615}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 18446744073709551615,}",
+  "read": "ERR trailing comma at line 1 column 28"
+ },
+ {
+  "document": "{\"k\": 18446744073709551615 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 28"
+ },
+ {
+  "document": "[18446744073709551616]",
+  "read": "OK [f1.8446744073709552e19|1.8446744073709552e+19]"
+ },
+ {
+  "document": "[18446744073709551616, 18446744073709551616]",
+  "read": "OK [f1.8446744073709552e19|1.8446744073709552e+19,f1.8446744073709552e19|1.8446744073709552e+19]"
+ },
+ {
+  "document": "{\"k\": 18446744073709551616}",
+  "read": "OK {\"k\":1.8446744073709552e+19}"
+ },
+ {
+  "document": "{18446744073709551616: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 18446744073709551616 ] ",
+  "read": "OK [f1.8446744073709552e19|1.8446744073709552e+19]"
+ },
+ {
+  "document": "[18446744073709551616]x",
+  "read": "ERR trailing characters at line 1 column 23"
+ },
+ {
+  "document": "[18446744073709551616,]",
+  "read": "ERR trailing comma at line 1 column 23"
+ },
+ {
+  "document": "[18446744073709551616 18446744073709551616]",
+  "read": "ERR expected `,` or `]` at line 1 column 23"
+ },
+ {
+  "document": "{\"k\" 18446744073709551616}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 18446744073709551616,}",
+  "read": "ERR trailing comma at line 1 column 28"
+ },
+ {
+  "document": "{\"k\": 18446744073709551616 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 28"
+ },
+ {
+  "document": "[-9223372036854775808]",
+  "read": "OK [i-9223372036854775808]"
+ },
+ {
+  "document": "[-9223372036854775808, -9223372036854775808]",
+  "read": "OK [i-9223372036854775808,i-9223372036854775808]"
+ },
+ {
+  "document": "{\"k\": -9223372036854775808}",
+  "read": "OK {\"k\":-9223372036854775808}"
+ },
+ {
+  "document": "{-9223372036854775808: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ -9223372036854775808 ] ",
+  "read": "OK [i-9223372036854775808]"
+ },
+ {
+  "document": "[-9223372036854775808]x",
+  "read": "ERR trailing characters at line 1 column 23"
+ },
+ {
+  "document": "[-9223372036854775808,]",
+  "read": "ERR trailing comma at line 1 column 23"
+ },
+ {
+  "document": "[-9223372036854775808 -9223372036854775808]",
+  "read": "ERR expected `,` or `]` at line 1 column 23"
+ },
+ {
+  "document": "{\"k\" -9223372036854775808}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": -9223372036854775808,}",
+  "read": "ERR trailing comma at line 1 column 28"
+ },
+ {
+  "document": "{\"k\": -9223372036854775808 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 28"
+ },
+ {
+  "document": "[-9223372036854775809]",
+  "read": "OK [f-9.223372036854776e18|-9.223372036854776e+18]"
+ },
+ {
+  "document": "[-9223372036854775809, -9223372036854775809]",
+  "read": "OK [f-9.223372036854776e18|-9.223372036854776e+18,f-9.223372036854776e18|-9.223372036854776e+18]"
+ },
+ {
+  "document": "{\"k\": -9223372036854775809}",
+  "read": "OK {\"k\":-9.223372036854776e+18}"
+ },
+ {
+  "document": "{-9223372036854775809: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ -9223372036854775809 ] ",
+  "read": "OK [f-9.223372036854776e18|-9.223372036854776e+18]"
+ },
+ {
+  "document": "[-9223372036854775809]x",
+  "read": "ERR trailing characters at line 1 column 23"
+ },
+ {
+  "document": "[-9223372036854775809,]",
+  "read": "ERR trailing comma at line 1 column 23"
+ },
+ {
+  "document": "[-9223372036854775809 -9223372036854775809]",
+  "read": "ERR expected `,` or `]` at line 1 column 23"
+ },
+ {
+  "document": "{\"k\" -9223372036854775809}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": -9223372036854775809,}",
+  "read": "ERR trailing comma at line 1 column 28"
+ },
+ {
+  "document": "{\"k\": -9223372036854775809 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 28"
+ },
+ {
+  "document": "[1.7976931348623157e308]",
+  "read": "OK [f1.7976931348623157e308|1.7976931348623157e+308]"
+ },
+ {
+  "document": "[1.7976931348623157e308, 1.7976931348623157e308]",
+  "read": "OK [f1.7976931348623157e308|1.7976931348623157e+308,f1.7976931348623157e308|1.7976931348623157e+308]"
+ },
+ {
+  "document": "{\"k\": 1.7976931348623157e308}",
+  "read": "OK {\"k\":1.7976931348623157e+308}"
+ },
+ {
+  "document": "{1.7976931348623157e308: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1.7976931348623157e308 ] ",
+  "read": "OK [f1.7976931348623157e308|1.7976931348623157e+308]"
+ },
+ {
+  "document": "[1.7976931348623157e308]x",
+  "read": "ERR trailing characters at line 1 column 25"
+ },
+ {
+  "document": "[1.7976931348623157e308,]",
+  "read": "ERR trailing comma at line 1 column 25"
+ },
+ {
+  "document": "[1.7976931348623157e308 1.7976931348623157e308]",
+  "read": "ERR expected `,` or `]` at line 1 column 25"
+ },
+ {
+  "document": "{\"k\" 1.7976931348623157e308}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1.7976931348623157e308,}",
+  "read": "ERR trailing comma at line 1 column 30"
+ },
+ {
+  "document": "{\"k\": 1.7976931348623157e308 \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 30"
+ },
+ {
+  "document": "[1e400]",
+  "read": "ERR number out of range at line 1 column 6"
+ },
+ {
+  "document": "[1e400, 1e400]",
+  "read": "ERR number out of range at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1e400}",
+  "read": "ERR number out of range at line 1 column 11"
+ },
+ {
+  "document": "{1e400: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ 1e400 ] ",
+  "read": "ERR number out of range at line 1 column 8"
+ },
+ {
+  "document": "[1e400]x",
+  "read": "ERR number out of range at line 1 column 6"
+ },
+ {
+  "document": "[1e400,]",
+  "read": "ERR number out of range at line 1 column 6"
+ },
+ {
+  "document": "[1e400 1e400]",
+  "read": "ERR number out of range at line 1 column 6"
+ },
+ {
+  "document": "{\"k\" 1e400}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": 1e400,}",
+  "read": "ERR number out of range at line 1 column 11"
+ },
+ {
+  "document": "{\"k\": 1e400 \"j\": 1}",
+  "read": "ERR number out of range at line 1 column 11"
+ },
+ {
+  "document": "[true]",
+  "read": "OK [true]"
+ },
+ {
+  "document": "[true, true]",
+  "read": "OK [true,true]"
+ },
+ {
+  "document": "{\"k\": true}",
+  "read": "OK {\"k\":true}"
+ },
+ {
+  "document": "{true: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ true ] ",
+  "read": "OK [true]"
+ },
+ {
+  "document": "[true]x",
+  "read": "ERR trailing characters at line 1 column 7"
+ },
+ {
+  "document": "[true,]",
+  "read": "ERR trailing comma at line 1 column 7"
+ },
+ {
+  "document": "[true true]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"k\" true}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": true,}",
+  "read": "ERR trailing comma at line 1 column 12"
+ },
+ {
+  "document": "{\"k\": true \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 12"
+ },
+ {
+  "document": "[false]",
+  "read": "OK [false]"
+ },
+ {
+  "document": "[false, false]",
+  "read": "OK [false,false]"
+ },
+ {
+  "document": "{\"k\": false}",
+  "read": "OK {\"k\":false}"
+ },
+ {
+  "document": "{false: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ false ] ",
+  "read": "OK [false]"
+ },
+ {
+  "document": "[false]x",
+  "read": "ERR trailing characters at line 1 column 8"
+ },
+ {
+  "document": "[false,]",
+  "read": "ERR trailing comma at line 1 column 8"
+ },
+ {
+  "document": "[false false]",
+  "read": "ERR expected `,` or `]` at line 1 column 8"
+ },
+ {
+  "document": "{\"k\" false}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": false,}",
+  "read": "ERR trailing comma at line 1 column 13"
+ },
+ {
+  "document": "{\"k\": false \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 13"
+ },
+ {
+  "document": "[null]",
+  "read": "OK [null]"
+ },
+ {
+  "document": "[null, null]",
+  "read": "OK [null,null]"
+ },
+ {
+  "document": "{\"k\": null}",
+  "read": "OK {\"k\":null}"
+ },
+ {
+  "document": "{null: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ null ] ",
+  "read": "OK [null]"
+ },
+ {
+  "document": "[null]x",
+  "read": "ERR trailing characters at line 1 column 7"
+ },
+ {
+  "document": "[null,]",
+  "read": "ERR trailing comma at line 1 column 7"
+ },
+ {
+  "document": "[null null]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"k\" null}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": null,}",
+  "read": "ERR trailing comma at line 1 column 12"
+ },
+ {
+  "document": "{\"k\": null \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 12"
+ },
+ {
+  "document": "[tru]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "[tru, tru]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "{\"k\": tru}",
+  "read": "ERR expected ident at line 1 column 10"
+ },
+ {
+  "document": "{tru: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ tru ] ",
+  "read": "ERR expected ident at line 1 column 7"
+ },
+ {
+  "document": "[tru]x",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "[tru,]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "[tru tru]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "{\"k\" tru}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": tru,}",
+  "read": "ERR expected ident at line 1 column 10"
+ },
+ {
+  "document": "{\"k\": tru \"j\": 1}",
+  "read": "ERR expected ident at line 1 column 10"
+ },
+ {
+  "document": "[nul]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "[nul, nul]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "{\"k\": nul}",
+  "read": "ERR expected ident at line 1 column 10"
+ },
+ {
+  "document": "{nul: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ nul ] ",
+  "read": "ERR expected ident at line 1 column 7"
+ },
+ {
+  "document": "[nul]x",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "[nul,]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "[nul nul]",
+  "read": "ERR expected ident at line 1 column 5"
+ },
+ {
+  "document": "{\"k\" nul}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": nul,}",
+  "read": "ERR expected ident at line 1 column 10"
+ },
+ {
+  "document": "{\"k\": nul \"j\": 1}",
+  "read": "ERR expected ident at line 1 column 10"
+ },
+ {
+  "document": "[truex]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "[truex, truex]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": truex}",
+  "read": "ERR expected `,` or `}` at line 1 column 11"
+ },
+ {
+  "document": "{truex: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": " [ truex ] ",
+  "read": "ERR expected `,` or `]` at line 1 column 8"
+ },
+ {
+  "document": "[truex]x",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "[truex,]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "[truex truex]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\" truex}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": truex,}",
+  "read": "ERR expected `,` or `}` at line 1 column 11"
+ },
+ {
+  "document": "{\"k\": truex \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 11"
+ },
+ {
+  "document": "[\"\"]",
+  "read": "OK [\"\"]"
+ },
+ {
+  "document": "[\"\", \"\"]",
+  "read": "OK [\"\",\"\"]"
+ },
+ {
+  "document": "{\"k\": \"\"}",
+  "read": "OK {\"k\":\"\"}"
+ },
+ {
+  "document": "{\"\": 1}",
+  "read": "OK {\"\":1}"
+ },
+ {
+  "document": " [ \"\" ] ",
+  "read": "OK [\"\"]"
+ },
+ {
+  "document": "[\"\"]x",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "[\"\",]",
+  "read": "ERR trailing comma at line 1 column 5"
+ },
+ {
+  "document": "[\"\" \"\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 5"
+ },
+ {
+  "document": "{\"k\" \"\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\",}",
+  "read": "ERR trailing comma at line 1 column 10"
+ },
+ {
+  "document": "{\"k\": \"\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 10"
+ },
+ {
+  "document": "[\"a\"]",
+  "read": "OK [\"a\"]"
+ },
+ {
+  "document": "[\"a\", \"a\"]",
+  "read": "OK [\"a\",\"a\"]"
+ },
+ {
+  "document": "{\"k\": \"a\"}",
+  "read": "OK {\"k\":\"a\"}"
+ },
+ {
+  "document": "{\"a\": 1}",
+  "read": "OK {\"a\":1}"
+ },
+ {
+  "document": " [ \"a\" ] ",
+  "read": "OK [\"a\"]"
+ },
+ {
+  "document": "[\"a\"]x",
+  "read": "ERR trailing characters at line 1 column 6"
+ },
+ {
+  "document": "[\"a\",]",
+  "read": "ERR trailing comma at line 1 column 6"
+ },
+ {
+  "document": "[\"a\" \"a\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\" \"a\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"a\",}",
+  "read": "ERR trailing comma at line 1 column 11"
+ },
+ {
+  "document": "{\"k\": \"a\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 11"
+ },
+ {
+  "document": "[\"a\\\"b\"]",
+  "read": "OK [\"a\\\"b\"]"
+ },
+ {
+  "document": "[\"a\\\"b\", \"a\\\"b\"]",
+  "read": "OK [\"a\\\"b\",\"a\\\"b\"]"
+ },
+ {
+  "document": "{\"k\": \"a\\\"b\"}",
+  "read": "OK {\"k\":\"a\\\"b\"}"
+ },
+ {
+  "document": "{\"a\\\"b\": 1}",
+  "read": "OK {\"a\\\"b\":1}"
+ },
+ {
+  "document": " [ \"a\\\"b\" ] ",
+  "read": "OK [\"a\\\"b\"]"
+ },
+ {
+  "document": "[\"a\\\"b\"]x",
+  "read": "ERR trailing characters at line 1 column 9"
+ },
+ {
+  "document": "[\"a\\\"b\",]",
+  "read": "ERR trailing comma at line 1 column 9"
+ },
+ {
+  "document": "[\"a\\\"b\" \"a\\\"b\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 9"
+ },
+ {
+  "document": "{\"k\" \"a\\\"b\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"a\\\"b\",}",
+  "read": "ERR trailing comma at line 1 column 14"
+ },
+ {
+  "document": "{\"k\": \"a\\\"b\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 14"
+ },
+ {
+  "document": "[\"\\\\\"]",
+  "read": "OK [\"\\\\\"]"
+ },
+ {
+  "document": "[\"\\\\\", \"\\\\\"]",
+  "read": "OK [\"\\\\\",\"\\\\\"]"
+ },
+ {
+  "document": "{\"k\": \"\\\\\"}",
+  "read": "OK {\"k\":\"\\\\\"}"
+ },
+ {
+  "document": "{\"\\\\\": 1}",
+  "read": "OK {\"\\\\\":1}"
+ },
+ {
+  "document": " [ \"\\\\\" ] ",
+  "read": "OK [\"\\\\\"]"
+ },
+ {
+  "document": "[\"\\\\\"]x",
+  "read": "ERR trailing characters at line 1 column 7"
+ },
+ {
+  "document": "[\"\\\\\",]",
+  "read": "ERR trailing comma at line 1 column 7"
+ },
+ {
+  "document": "[\"\\\\\" \"\\\\\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"k\" \"\\\\\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\\\\\",}",
+  "read": "ERR trailing comma at line 1 column 12"
+ },
+ {
+  "document": "{\"k\": \"\\\\\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 12"
+ },
+ {
+  "document": "[\"\\u0041\"]",
+  "read": "OK [\"A\"]"
+ },
+ {
+  "document": "[\"\\u0041\", \"\\u0041\"]",
+  "read": "OK [\"A\",\"A\"]"
+ },
+ {
+  "document": "{\"k\": \"\\u0041\"}",
+  "read": "OK {\"k\":\"A\"}"
+ },
+ {
+  "document": "{\"\\u0041\": 1}",
+  "read": "OK {\"A\":1}"
+ },
+ {
+  "document": " [ \"\\u0041\" ] ",
+  "read": "OK [\"A\"]"
+ },
+ {
+  "document": "[\"\\u0041\"]x",
+  "read": "ERR trailing characters at line 1 column 11"
+ },
+ {
+  "document": "[\"\\u0041\",]",
+  "read": "ERR trailing comma at line 1 column 11"
+ },
+ {
+  "document": "[\"\\u0041\" \"\\u0041\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 11"
+ },
+ {
+  "document": "{\"k\" \"\\u0041\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\\u0041\",}",
+  "read": "ERR trailing comma at line 1 column 16"
+ },
+ {
+  "document": "{\"k\": \"\\u0041\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 16"
+ },
+ {
+  "document": "[\"\\ud83d\\ude00\"]",
+  "read": "OK [\"😀\"]"
+ },
+ {
+  "document": "[\"\\ud83d\\ude00\", \"\\ud83d\\ude00\"]",
+  "read": "OK [\"😀\",\"😀\"]"
+ },
+ {
+  "document": "{\"k\": \"\\ud83d\\ude00\"}",
+  "read": "OK {\"k\":\"😀\"}"
+ },
+ {
+  "document": "{\"\\ud83d\\ude00\": 1}",
+  "read": "OK {\"😀\":1}"
+ },
+ {
+  "document": " [ \"\\ud83d\\ude00\" ] ",
+  "read": "OK [\"😀\"]"
+ },
+ {
+  "document": "[\"\\ud83d\\ude00\"]x",
+  "read": "ERR trailing characters at line 1 column 17"
+ },
+ {
+  "document": "[\"\\ud83d\\ude00\",]",
+  "read": "ERR trailing comma at line 1 column 17"
+ },
+ {
+  "document": "[\"\\ud83d\\ude00\" \"\\ud83d\\ude00\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 17"
+ },
+ {
+  "document": "{\"k\" \"\\ud83d\\ude00\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\\ud83d\\ude00\",}",
+  "read": "ERR trailing comma at line 1 column 22"
+ },
+ {
+  "document": "{\"k\": \"\\ud83d\\ude00\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 22"
+ },
+ {
+  "document": "[\"\\ud83d\"]",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": "[\"\\ud83d\", \"\\ud83d\"]",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": "{\"k\": \"\\ud83d\"}",
+  "read": "ERR unexpected end of hex escape at line 1 column 14"
+ },
+ {
+  "document": "{\"\\ud83d\": 1}",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": " [ \"\\ud83d\" ] ",
+  "read": "ERR unexpected end of hex escape at line 1 column 11"
+ },
+ {
+  "document": "[\"\\ud83d\"]x",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": "[\"\\ud83d\",]",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": "[\"\\ud83d\" \"\\ud83d\"]",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": "{\"k\" \"\\ud83d\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\\ud83d\",}",
+  "read": "ERR unexpected end of hex escape at line 1 column 14"
+ },
+ {
+  "document": "{\"k\": \"\\ud83d\" \"j\": 1}",
+  "read": "ERR unexpected end of hex escape at line 1 column 14"
+ },
+ {
+  "document": "[\"\\n\\t\\r\\b\\f\\/\"]",
+  "read": "OK [\"\\n\\t\\r\\b\\f/\"]"
+ },
+ {
+  "document": "[\"\\n\\t\\r\\b\\f\\/\", \"\\n\\t\\r\\b\\f\\/\"]",
+  "read": "OK [\"\\n\\t\\r\\b\\f/\",\"\\n\\t\\r\\b\\f/\"]"
+ },
+ {
+  "document": "{\"k\": \"\\n\\t\\r\\b\\f\\/\"}",
+  "read": "OK {\"k\":\"\\n\\t\\r\\b\\f/\"}"
+ },
+ {
+  "document": "{\"\\n\\t\\r\\b\\f\\/\": 1}",
+  "read": "OK {\"\\n\\t\\r\\b\\f/\":1}"
+ },
+ {
+  "document": " [ \"\\n\\t\\r\\b\\f\\/\" ] ",
+  "read": "OK [\"\\n\\t\\r\\b\\f/\"]"
+ },
+ {
+  "document": "[\"\\n\\t\\r\\b\\f\\/\"]x",
+  "read": "ERR trailing characters at line 1 column 17"
+ },
+ {
+  "document": "[\"\\n\\t\\r\\b\\f\\/\",]",
+  "read": "ERR trailing comma at line 1 column 17"
+ },
+ {
+  "document": "[\"\\n\\t\\r\\b\\f\\/\" \"\\n\\t\\r\\b\\f\\/\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 17"
+ },
+ {
+  "document": "{\"k\" \"\\n\\t\\r\\b\\f\\/\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\\n\\t\\r\\b\\f\\/\",}",
+  "read": "ERR trailing comma at line 1 column 22"
+ },
+ {
+  "document": "{\"k\": \"\\n\\t\\r\\b\\f\\/\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 22"
+ },
+ {
+  "document": "[\"\\x\"]",
+  "read": "ERR invalid escape at line 1 column 4"
+ },
+ {
+  "document": "[\"\\x\", \"\\x\"]",
+  "read": "ERR invalid escape at line 1 column 4"
+ },
+ {
+  "document": "{\"k\": \"\\x\"}",
+  "read": "ERR invalid escape at line 1 column 9"
+ },
+ {
+  "document": "{\"\\x\": 1}",
+  "read": "ERR invalid escape at line 1 column 4"
+ },
+ {
+  "document": " [ \"\\x\" ] ",
+  "read": "ERR invalid escape at line 1 column 6"
+ },
+ {
+  "document": "[\"\\x\"]x",
+  "read": "ERR invalid escape at line 1 column 4"
+ },
+ {
+  "document": "[\"\\x\",]",
+  "read": "ERR invalid escape at line 1 column 4"
+ },
+ {
+  "document": "[\"\\x\" \"\\x\"]",
+  "read": "ERR invalid escape at line 1 column 4"
+ },
+ {
+  "document": "{\"k\" \"\\x\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\\x\",}",
+  "read": "ERR invalid escape at line 1 column 9"
+ },
+ {
+  "document": "{\"k\": \"\\x\" \"j\": 1}",
+  "read": "ERR invalid escape at line 1 column 9"
+ },
+ {
+  "document": "[\"\u0001\"]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "[\"\u0001\", \"\u0001\"]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "{\"k\": \"\u0001\"}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 8"
+ },
+ {
+  "document": "{\"\u0001\": 1}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": " [ \"\u0001\" ] ",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 5"
+ },
+ {
+  "document": "[\"\u0001\"]x",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "[\"\u0001\",]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "[\"\u0001\" \"\u0001\"]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "{\"k\" \"\u0001\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\u0001\",}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 8"
+ },
+ {
+  "document": "{\"k\": \"\u0001\" \"j\": 1}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 8"
+ },
+ {
+  "document": "[\"\t\"]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "[\"\t\", \"\t\"]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "{\"k\": \"\t\"}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 8"
+ },
+ {
+  "document": "{\"\t\": 1}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": " [ \"\t\" ] ",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 5"
+ },
+ {
+  "document": "[\"\t\"]x",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "[\"\t\",]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "[\"\t\" \"\t\"]",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 3"
+ },
+ {
+  "document": "{\"k\" \"\t\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"\t\",}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 8"
+ },
+ {
+  "document": "{\"k\": \"\t\" \"j\": 1}",
+  "read": "ERR control character (\\u0000-\\u001F) found while parsing a string at line 1 column 8"
+ },
+ {
+  "document": "[\"unterminated]",
+  "read": "ERR EOF while parsing a string at line 1 column 15"
+ },
+ {
+  "document": "[\"unterminated, \"unterminated]",
+  "read": "ERR expected `,` or `]` at line 1 column 18"
+ },
+ {
+  "document": "{\"k\": \"unterminated}",
+  "read": "ERR EOF while parsing a string at line 1 column 20"
+ },
+ {
+  "document": "{\"unterminated: 1}",
+  "read": "ERR EOF while parsing a string at line 1 column 18"
+ },
+ {
+  "document": " [ \"unterminated ] ",
+  "read": "ERR EOF while parsing a string at line 1 column 19"
+ },
+ {
+  "document": "[\"unterminated]x",
+  "read": "ERR EOF while parsing a string at line 1 column 16"
+ },
+ {
+  "document": "[\"unterminated,]",
+  "read": "ERR EOF while parsing a string at line 1 column 16"
+ },
+ {
+  "document": "[\"unterminated \"unterminated]",
+  "read": "ERR expected `,` or `]` at line 1 column 17"
+ },
+ {
+  "document": "{\"k\" \"unterminated}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"unterminated,}",
+  "read": "ERR EOF while parsing a string at line 1 column 21"
+ },
+ {
+  "document": "{\"k\": \"unterminated \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 22"
+ },
+ {
+  "document": "[\"é\"]",
+  "read": "OK [\"é\"]"
+ },
+ {
+  "document": "[\"é\", \"é\"]",
+  "read": "OK [\"é\",\"é\"]"
+ },
+ {
+  "document": "{\"k\": \"é\"}",
+  "read": "OK {\"k\":\"é\"}"
+ },
+ {
+  "document": "{\"é\": 1}",
+  "read": "OK {\"é\":1}"
+ },
+ {
+  "document": " [ \"é\" ] ",
+  "read": "OK [\"é\"]"
+ },
+ {
+  "document": "[\"é\"]x",
+  "read": "ERR trailing characters at line 1 column 7"
+ },
+ {
+  "document": "[\"é\",]",
+  "read": "ERR trailing comma at line 1 column 7"
+ },
+ {
+  "document": "[\"é\" \"é\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"k\" \"é\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"é\",}",
+  "read": "ERR trailing comma at line 1 column 12"
+ },
+ {
+  "document": "{\"k\": \"é\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 12"
+ },
+ {
+  "document": "[\"日本\"]",
+  "read": "OK [\"日本\"]"
+ },
+ {
+  "document": "[\"日本\", \"日本\"]",
+  "read": "OK [\"日本\",\"日本\"]"
+ },
+ {
+  "document": "{\"k\": \"日本\"}",
+  "read": "OK {\"k\":\"日本\"}"
+ },
+ {
+  "document": "{\"日本\": 1}",
+  "read": "OK {\"日本\":1}"
+ },
+ {
+  "document": " [ \"日本\" ] ",
+  "read": "OK [\"日本\"]"
+ },
+ {
+  "document": "[\"日本\"]x",
+  "read": "ERR trailing characters at line 1 column 11"
+ },
+ {
+  "document": "[\"日本\",]",
+  "read": "ERR trailing comma at line 1 column 11"
+ },
+ {
+  "document": "[\"日本\" \"日本\"]",
+  "read": "ERR expected `,` or `]` at line 1 column 11"
+ },
+ {
+  "document": "{\"k\" \"日本\"}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "{\"k\": \"日本\",}",
+  "read": "ERR trailing comma at line 1 column 16"
+ },
+ {
+  "document": "{\"k\": \"日本\" \"j\": 1}",
+  "read": "ERR expected `,` or `}` at line 1 column 16"
+ },
+ {
+  "document": "",
+  "read": "ERR EOF while parsing a value at line 1 column 0"
+ },
+ {
+  "document": " ",
+  "read": "ERR EOF while parsing a value at line 1 column 1"
+ },
+ {
+  "document": "[",
+  "read": "ERR EOF while parsing a list at line 1 column 1"
+ },
+ {
+  "document": "]",
+  "read": "ERR expected value at line 1 column 1"
+ },
+ {
+  "document": "{",
+  "read": "ERR EOF while parsing an object at line 1 column 1"
+ },
+ {
+  "document": "}",
+  "read": "ERR expected value at line 1 column 1"
+ },
+ {
+  "document": "[]",
+  "read": "OK []"
+ },
+ {
+  "document": "{}",
+  "read": "OK {}"
+ },
+ {
+  "document": "[[]]",
+  "read": "OK [[]]"
+ },
+ {
+  "document": "{\"a\":{}}",
+  "read": "OK {\"a\":{}}"
+ },
+ {
+  "document": "[[], {}, [{}]]",
+  "read": "OK [[],{},[{}]]"
+ },
+ {
+  "document": "{\"a\": 1, \"a\": 2}",
+  "read": "OK {\"a\":2}"
+ },
+ {
+  "document": "{\"a\": 1, \"b\": [1, {\"c\": null}]}",
+  "read": "OK {\"a\":1,\"b\":[1,{\"c\":null}]}"
+ },
+ {
+  "document": "[1,2,3",
+  "read": "ERR EOF while parsing a list at line 1 column 6"
+ },
+ {
+  "document": "{\"a\":1",
+  "read": "ERR EOF while parsing an object at line 1 column 6"
+ },
+ {
+  "document": "{\"a\"}",
+  "read": "ERR expected `:` at line 1 column 5"
+ },
+ {
+  "document": "{1: 1}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": "[\n1,\r\n2\t]",
+  "read": "OK [u1,u2]"
+ },
+ {
+  "document": "﻿1",
+  "read": "ERR expected value at line 1 column 1"
+ },
+ {
+  "document": "[1]\n",
+  "read": "OK [u1]"
+ },
+ {
+  "document": "[1] [2]",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "{\"\": 0}",
+  "read": "OK {\"\":0}"
+ },
+ {
+  "document": "{\"a\":1,}",
+  "read": "ERR trailing comma at line 1 column 8"
+ },
+ {
+  "document": "[,1]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "[1,,2]",
+  "read": "ERR expected value at line 1 column 4"
+ },
+ {
+  "document": "{,}",
+  "read": "ERR key must be a string at line 1 column 2"
+ },
+ {
+  "document": "{\"a\":}",
+  "read": "ERR expected value at line 1 column 6"
+ },
+ {
+  "document": "[\"a\", \"b\"], []",
+  "read": "ERR trailing characters at line 1 column 11"
+ },
+ {
+  "document": "0e400",
+  "read": "OK f0e0|0.0"
+ },
+ {
+  "document": "1e-400",
+  "read": "OK f0e0|0.0"
+ },
+ {
+  "document": "-1e-400",
+  "read": "OK f-0e0|-0.0"
+ },
+ {
+  "document": "1e308",
+  "read": "OK f1e308|1e+308"
+ },
+ {
+  "document": "1e309",
+  "read": "ERR number out of range at line 1 column 5"
+ },
+ {
+  "document": "123456789012345678901234567890",
+  "read": "OK f1.2345678901234568e29|1.2345678901234568e+29"
+ },
+ {
+  "document": "-123456789012345678901234567890",
+  "read": "OK f-1.2345678901234568e29|-1.2345678901234568e+29"
+ },
+ {
+  "document": "0.1",
+  "read": "OK f1e-1|0.1"
+ },
+ {
+  "document": "0.30000000000000004",
+  "read": "OK f3.0000000000000004e-1|0.30000000000000004"
+ },
+ {
+  "document": "1.0",
+  "read": "OK f1e0|1.0"
+ },
+ {
+  "document": "100.0",
+  "read": "OK f1e2|100.0"
+ },
+ {
+  "document": "1e16",
+  "read": "OK f1e16|1e+16"
+ },
+ {
+  "document": "1e15",
+  "read": "OK f1e15|1000000000000000.0"
+ },
+ {
+  "document": "1e21",
+  "read": "OK f1e21|1e+21"
+ },
+ {
+  "document": "1e-7",
+  "read": "OK f1e-7|1e-7"
+ },
+ {
+  "document": "0.00001",
+  "read": "OK f1e-5|0.00001"
+ },
+ {
+  "document": "0.000001",
+  "read": "OK f1e-6|1e-6"
+ },
+ {
+  "document": "12345678901234567890.5",
+  "read": "OK f1.2345678901234567e19|1.2345678901234567e+19"
+ },
+ {
+  "document": "3.141592653589793238462643383279",
+  "read": "OK f3.141592653589793e0|3.141592653589793"
+ },
+ {
+  "document": "2.2250738585072014e-308",
+  "read": "OK f2.2250738585072014e-308|2.2250738585072014e-308"
+ },
+ {
+  "document": "4.9e-324",
+  "read": "OK f5e-324|5e-324"
+ },
+ {
+  "document": "5e-324",
+  "read": "OK f5e-324|5e-324"
+ },
+ {
+  "document": "1e-323",
+  "read": "OK f1e-323|1e-323"
+ },
+ {
+  "document": "9007199254740993",
+  "read": "OK u9007199254740993"
+ },
+ {
+  "document": "-9007199254740993.0",
+  "read": "OK f-9.007199254740994e15|-9007199254740994.0"
+ },
+ {
+  "document": "1.00000000000000011102230246251565404236316680908203125",
+  "read": "OK f1.0000000000000002e0|1.0000000000000002"
+ },
+ {
+  "document": "123.456e-2",
+  "read": "OK f1.23456e0|1.23456"
+ },
+ {
+  "document": "7.0e+10",
+  "read": "OK f7e10|70000000000.0"
+ },
+ {
+  "document": "-0.0",
+  "read": "OK f-0e0|-0.0"
+ },
+ {
+  "document": "0.0",
+  "read": "OK f0e0|0.0"
+ },
+ {
+  "document": "1E+2",
+  "read": "OK f1e2|100.0"
+ },
+ {
+  "document": "1e+0",
+  "read": "OK f1e0|1.0"
+ },
+ {
+  "document": "1e-0",
+  "read": "OK f1e0|1.0"
+ },
+ {
+  "document": "0.1e1",
+  "read": "OK f1e0|1.0"
+ },
+ {
+  "document": "1.5E3",
+  "read": "OK f1.5e3|1500.0"
+ },
+ {
+  "document": "9223372036854775807",
+  "read": "OK u9223372036854775807"
+ },
+ {
+  "document": "9223372036854775808",
+  "read": "OK u9223372036854775808"
+ },
+ {
+  "document": "-9223372036854775807",
+  "read": "OK i-9223372036854775807"
+ },
+ {
+  "document": "18446744073709551614",
+  "read": "OK u18446744073709551614"
+ },
+ {
+  "document": "[1e999]",
+  "read": "ERR number out of range at line 1 column 6"
+ },
+ {
+  "document": "1e2147483648",
+  "read": "ERR number out of range at line 1 column 12"
+ },
+ {
+  "document": "0e2147483648",
+  "read": "OK f0e0|0.0"
+ },
+ {
+  "document": "1e-2147483648",
+  "read": "OK f0e0|0.0"
+ },
+ {
+  "document": "-",
+  "read": "ERR EOF while parsing a value at line 1 column 1"
+ },
+ {
+  "document": "--1",
+  "read": "ERR invalid number at line 1 column 2"
+ },
+ {
+  "document": "1.e5",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "1.5e",
+  "read": "ERR EOF while parsing a value at line 1 column 4"
+ },
+ {
+  "document": "1.5e+",
+  "read": "ERR EOF while parsing a value at line 1 column 5"
+ },
+ {
+  "document": "[1,2",
+  "read": "ERR EOF while parsing a list at line 1 column 4"
+ },
+ {
+  "document": "\"\\uD800\"",
+  "read": "ERR unexpected end of hex escape at line 1 column 8"
+ },
+ {
+  "document": "\"\\uDC00\"",
+  "read": "ERR lone leading surrogate in hex escape at line 1 column 7"
+ },
+ {
+  "document": "\"\\uD800x\"",
+  "read": "ERR unexpected end of hex escape at line 1 column 8"
+ },
+ {
+  "document": "\"\\uD800\\u0041\"",
+  "read": "ERR lone leading surrogate in hex escape at line 1 column 13"
+ },
+ {
+  "document": "\"\\uD800\\n\"",
+  "read": "ERR unexpected end of hex escape at line 1 column 9"
+ },
+ {
+  "document": "\"\\u12\"",
+  "read": "ERR EOF while parsing a string at line 1 column 6"
+ },
+ {
+  "document": "\"\\u12G4\"",
+  "read": "ERR invalid escape at line 1 column 7"
+ },
+ {
+  "document": "{\"a\":1 \"b\":2}",
+  "read": "ERR expected `,` or `}` at line 1 column 8"
+ },
+ {
+  "document": "{\"a\" 1}",
+  "read": "ERR expected `:` at line 1 column 6"
+ },
+ {
+  "document": "[1 2]",
+  "read": "ERR expected `,` or `]` at line 1 column 4"
+ },
+ {
+  "document": "[01]",
+  "read": "ERR invalid number at line 1 column 3"
+ },
+ {
+  "document": "[-01]",
+  "read": "ERR invalid number at line 1 column 4"
+ },
+ {
+  "document": "[.1]",
+  "read": "ERR expected value at line 1 column 2"
+ },
+ {
+  "document": "\"\"",
+  "read": "OK \"\""
+ },
+ {
+  "document": "\"\\u0000\"",
+  "read": "OK \"\\u0000\""
+ },
+ {
+  "document": "{\"b\":1,\"a\":2,\"a\":3}",
+  "read": "OK {\"a\":3,\"b\":1}"
+ },
+ {
+  "document": " \n [\n1\n,\n2\n]x",
+  "read": "ERR trailing characters at line 6 column 2"
+ },
+ {
+  "document": "\n\n{\"a\":\n tru}",
+  "read": "ERR expected ident at line 4 column 5"
+ },
+ {
+  "document": "[[[[[]]]]",
+  "read": "ERR EOF while parsing a list at line 1 column 9"
+ },
+ {
+  "document": "nulll",
+  "read": "ERR trailing characters at line 1 column 5"
+ },
+ {
+  "document": "[true false]",
+  "read": "ERR expected `,` or `]` at line 1 column 7"
+ },
+ {
+  "document": "{\"a\":[}",
+  "read": "ERR expected value at line 1 column 7"
+ }
+]
