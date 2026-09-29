@@ -1,3 +1,9 @@
+## 0.2.3 (2026-09-29)
+
+### Fix
+
+- run the large-stack thread at the caller's quality of service
+
 ## 0.2.2 (2026-09-26)
 
 ### Fix
