@@ -16,6 +16,10 @@ private final class ResultBox<T>: @unchecked Sendable {
 
 /// Runs `body` on a dedicated thread with a stack of `largeStackSize` bytes
 /// and returns its result.
+///
+/// The thread takes the caller's quality of service. The caller waits for
+/// it, so a lower one would leave a user-initiated caller stuck behind
+/// default-priority work: a priority inversion.
 func withLargeStack<T>(_ body: @escaping @Sendable () -> T) -> T {
     let box = ResultBox<T>()
     let done = DispatchSemaphore(value: 0)
@@ -24,7 +28,25 @@ func withLargeStack<T>(_ body: @escaping @Sendable () -> T) -> T {
         done.signal()
     }
     thread.stackSize = largeStackSize
+    thread.qualityOfService = callerQualityOfService()
     thread.start()
     done.wait()
     return box.value!
+}
+
+/// The quality of service the current thread runs at. `Thread.current`'s own
+/// property reports `.default` on Dispatch and Swift concurrency threads, so
+/// the thread's actual class is read instead.
+func callerQualityOfService() -> QualityOfService {
+    #if canImport(Darwin)
+    switch qos_class_self() {
+    case QOS_CLASS_USER_INTERACTIVE: .userInteractive
+    case QOS_CLASS_USER_INITIATED: .userInitiated
+    case QOS_CLASS_UTILITY: .utility
+    case QOS_CLASS_BACKGROUND: .background
+    default: .default
+    }
+    #else
+    Thread.current.qualityOfService
+    #endif
 }
